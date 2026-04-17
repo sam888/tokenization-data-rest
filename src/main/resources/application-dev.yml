@@ -1,0 +1,36 @@
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:token_db
+    # Replace 'mem:testdb' with a file path by commenting out line below
+    # url: jdbc:h2:file:./data/token_db
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+    jpa:
+      show-sql: true
+      hibernate:
+        ddl-auto: create-drop
+        format_sql: true # Optional: Makes the logs much easier to read
+          # Forces Hibernate to use the newer sequence generator behavior
+#         id:
+#           new_generator_mappings: true
+#           # Helps Hibernate find the right schema in H2
+#           default_schema: PUBLIC
+
+# Note: If Spring detects an in-memory database jdbc:h2:mem:token_db is used, the default ddl-auto is: create-drop
+# Behavior: It creates the tables and sequences when the app starts and deletes everything when the app shuts down.
+# Reasoning: Since the memory is wiped anyway, Spring assumes you want a fresh, clean schema every time you run your
+#            tests or local dev.
+# Warning:
+#  - Use this only for dev profile, be very careful when connecting to UAT/Prod database even when connecting to real DB
+#
+# For External Databases (PostgreSQL, MySQL, Oracle, etc.):
+# - If Spring detects a "real" database driver, the default ddl-auto is: none
+# - 'none' behavior: Spring will not attempt to create, update, or validate the database schema at all.
+
+h2:
+  console:
+    enabled: true
+    path: /h2-console
+

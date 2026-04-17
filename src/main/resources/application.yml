@@ -1,0 +1,33 @@
+
+spring:
+  application:
+    name: tokenization-data-rest
+  profiles:
+    active: dev
+  datasource:
+    jpa:
+      hibernate:
+        # Use 'none' to completely stop Hibernate from touching the schema
+        # Use 'validate' to check if the tables exist without changing them
+        ddl-auto: validate  # Override this in dev profile locally. DO NOT override in uat/prod profile
+
+# ddl-auto settings:
+#  - 'none': Do not touch the schema. Hibernate does nothing. If the table doesn't exist, the app will fail only when it
+#     tries to run a SQL against missing table at runtime
+#  - 'validate': Hibernate checks the database against your Java entities on startup. If they don't match, the app fails to start.
+#  - 'create': Create the schema if it doesn't exist
+#  - 'create-drop': Creates tables on start and deletes them on shutdown.
+#  - 'update': Hibernate attempts to add missing columns or tables. It will not delete existing data.
+
+#  All automatic repository endpoints will now start with /data (e.g., /data/tokens)
+#  data:
+#      rest:
+#        base-path:
+
+# log SQL queries to see if action is happening
+logging:
+  level:
+    org.hibernate.SQL: debug
+
+server:
+  port: 3000
