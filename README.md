@@ -94,7 +94,7 @@ The **create-drop** setting follows a specific, destructive lifecycle every time
 * Data Overwriting: It doesn't "update" columns; it wipes the table and starts over. You lose all existing records.
 * Accidental Execution: If a developer accidentally runs the app locally but points it to the UAT/Prod database string, the database is wiped before anyone can hit "Stop."!
 
-Also don't run any unit tests with create-drop setting!
+Also don't run any unit tests with create-drop setting when the profile is connecting to a real external database!
 
 ---
 
