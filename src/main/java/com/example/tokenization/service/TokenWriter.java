@@ -20,14 +20,9 @@ public class TokenWriter {
    }
 
    /**
-    * Propagation.REQUIRES_NEW not used in TokenService to avoid the "Self-Invocation" Problem (The Silent Killer).
-    * If Propagation.REQUIRES_NEW is used in TokenService, Spring applies @Transactional by creating a "Proxy" around
-    * TokenService so if TokenService.save(newToken) having Propagation.REQUIRES_NEW is called within TokenService, the
-    * method save(newToken) will be called on this (the local object), not the Proxy => @Transactional settings on the
-    * save(newToken) method are ignored entirely. Calling this method within TokenService will fix this issue.
-    *
-    * @param token
-    * @return
+    * Saves a token in its own independent transaction (REQUIRES_NEW), so a failure
+    * here does not affect other in-progress saves. Called from TokenService to avoid
+    * the self-invocation proxy problem.
     */
    @Transactional(propagation = Propagation.REQUIRES_NEW)
    public Token save(Token token) {

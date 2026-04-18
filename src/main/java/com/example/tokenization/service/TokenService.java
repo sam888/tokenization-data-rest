@@ -17,8 +17,8 @@ import java.util.List;
  * Created: 16-Apr-2026
  */
 @Slf4j
-@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 @Service
+@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 public class TokenService {
 
    private final TokenRepository tokenRepository;
@@ -41,9 +41,13 @@ public class TokenService {
    public List<String> tokenizeAccountNumbers(List<String> accountNumbers) {
       return accountNumbers.stream().map(accountNumber -> {
          try {
-            // This call leaves Propagation.SUPPORTS context and starts a Propagation.REQUIRES_NEW context
-            // to avoid rolling back all transactions if a single transaction fails.
-            return tokenWriter.save( getNewToken( accountNumber ) ).getToken();
+            // Propagation.REQUIRES_NEW is placed in TokenWriter (a separate bean) rather than here
+            // to avoid the Spring "Self-Invocation" problem. If a REQUIRES_NEW method is called from
+            // within the same class (e.g. this.save()), Spring's proxy is bypassed and the
+            // @Transactional annotation is silently ignored. Delegating to TokenWriter ensures
+            // the call goes through Spring's proxy, so REQUIRES_NEW is honoured — each save runs
+            // in its own independent transaction, isolating failures per account.
+            return tokenRepository.save( getNewToken( accountNumber ) ).getToken();
          } catch (DataIntegrityViolationException ex) {
             String errorMessage = "Failed to tokenize account " + accountNumber +
                                   ". Account number exists already.";
