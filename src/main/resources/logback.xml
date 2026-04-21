@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="10 seconds">
+
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
+    <property name="log.folder" value="./log/"/>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- daily rollover with gzip-->
+            <fileNamePattern>${log.folder}/tokenization-data-rest.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxFileSize>40MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{ISO8601} %-5level [%thread] %logger{36}.%M:%L - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Send debug messages to System.out -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date{ISO8601} %-5level [%thread] %logger{36}.%M:%L - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.example.tokenization" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <!-- By default, the level of the root level is set to WARN -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>

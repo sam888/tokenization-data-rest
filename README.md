@@ -4,7 +4,7 @@ This is a lightweight Spring Boot service demonstrating a tokenization workflow 
 
 1. A tokenization API that takes a list of account numbers (or any confidential data) as input then generates a list of tokens matching those account numbers before saving both account numbers and tokens to Tokens table. The list of tokens generated will be returned as API response.
 
-* **URL:** `http://localhost:3000/token`
+* **URL:** `http://localhost:3000/tokens`
 * **Method:** `POST`
 * **Content-Type:** `application/json`
 * Sample request
@@ -26,7 +26,7 @@ This is a lightweight Spring Boot service demonstrating a tokenization workflow 
 
 2 A detokenization API that takes a list of tokens (generated from Tokenization API) as input to retrieve the list of account numbers from backend Token table.
 
-* **URL:** `http://localhost:3000/token/resolve`
+* **URL:** `http://localhost:3000/tokens/resolve`
 * **Method:** `POST`
 * **Content-Type:** `application/json`
 * Sample request
